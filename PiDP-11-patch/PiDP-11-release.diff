@@ -1,0 +1,1791 @@
+diff -rN ../c-news-orig/batch/awk.test ../PiDP-11-release/batch/awk.test
+0a1
+> { print ( $1) ; }
+diff -rN ../c-news-orig/batch/batchcheck ../PiDP-11-release/batch/batchcheck
+6c6
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/batch/batchih ../PiDP-11-release/batch/batchih
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/batch/batchra ../PiDP-11-release/batch/batchra
+6c6
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/batch/batchsm ../PiDP-11-release/batch/batchsm
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/batch/batchsplit ../PiDP-11-release/batch/batchsplit
+8c8
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/batch/batchsplitter ../PiDP-11-release/batch/batchsplitter
+9c9
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/batch/bpfind ../PiDP-11-release/batch/bpfind
+6c6
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/batch/makefile ../PiDP-11-release/batch/makefile
+76,81c76,85
+< 	echo 'echo 4' >bin/queuelen
+< 	echo 'echo 99' >bin/spacefor
+< 	echo '' >bin/lock
+< 	echo '' >bin/unlock
+< 	echo 'echo $$* ; echo === ; cat ; echo ===' >bin/report
+< 	echo 'cat >>$$NEWSSITEDIR/togo.leftover' >bin/staller
+---
+> 	echo '#!/bin/sh' >bin/queuelen
+> 	echo 'echo 4' >>bin/queuelen
+> 	echo '#!/bin/sh' >bin/spacefor
+> 	echo 'echo 99' >>bin/spacefor
+> 	echo '#!/bin/sh' >bin/lock
+> 	echo '#!/bin/sh' >bin/unlock
+> 	echo '#!/bin/sh' >bin/report
+> 	echo 'echo $$* ; echo === ; cat ; echo ===' >>bin/report
+> 	echo '#!/bin/sh' >bin/staller
+> 	echo 'cat >>$$NEWSSITEDIR/togo.leftover' >>bin/staller
+diff -rN ../c-news-orig/batch/sendbatches ../PiDP-11-release/batch/sendbatches
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+62c62
+< 0)	awk "\$2 ~ /$classpat/" $parms >$tmp
+---
+> 0)	(PATH=/bin origpath="" exec awk "\$2 ~ /$classpat/" $parms >$tmp )
+69c69
+< 		syses="`egrep '^[^/#]' $parms | awk '{ print $1 }'`"
+---
+> 		syses="`egrep '^[^/#]' $parms | (PATH=/bin origpath="" exec awk '{ print $1 }')`"
+diff -rN ../c-news-orig/batch/usenntpxmit ../PiDP-11-release/batch/usenntpxmit
+6c6
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/batch/viainews ../PiDP-11-release/batch/viainews
+6c6
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/conf/config ../PiDP-11-release/conf/config
+12c12
+< NEWSCTL=${NEWSCTL-/etc/news}
+---
+> NEWSCTL=${NEWSCTL-/usr/etc/news}
+16c16
+< NEWSARTS=${NEWSARTS-/var/news}
+---
+> NEWSARTS=${NEWSARTS-/usr/spool/news}
+18c18
+< NEWSOV=${NEWSOV-/var/news}
+---
+> NEWSOV=${NEWSOV-/usr/spool/news}
+20c20
+< NEWSPATH=${NEWSPATH-/bin:/usr/bin:/usr/contrib/bin}
+---
+> NEWSPATH=${NEWSPATH-/bin:/usr/bin:/usr/ucb:/usr/local/bin}
+24c24
+< NEWSCONFIG=${NEWSCONFIG-/etc/news/bin/config}
+---
+> NEWSCONFIG=${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/conf/config.make ../PiDP-11-release/conf/config.make
+0a1,58
+> # make header file
+> # pathname variables
+> # =()<NEWSARTS=@<NEWSARTS>@>()=
+> NEWSARTS=/var/news
+> # =()<NEWSOV=@<NEWSOV>@>()=
+> NEWSOV=/var/news
+> # =()<NEWSBIN=@<NEWSBIN>@>()=
+> NEWSBIN=/usr/libexec/news
+> # =()<NEWSCTL=@<NEWSCTL>@>()=
+> NEWSCTL=/usr/etc/news
+> # =()<NEWSCONFIG=@<NEWSCONFIG>@>()=
+> NEWSCONFIG=/usr/etc/news/bin/config
+> 
+> # workaround for System V make bug
+> SHELL=/bin/sh
+> 
+> # directories where things go
+> UIBIN=/usr/bin
+> RBIN=/usr/libexec/news/input
+> 
+> # compilation stuff
+> # LIB is for makefile dependencies, LIBS for cc invocations
+> LIB=../libcnews.a
+> LIBS=../libcnews.a 
+> CFLAGS=$(MORECFLAGS) -O -DSMALLMEM -I../include
+> LDFLAGS=$(CFLAGS) 
+> LINTFLAGS=$(MORELINTFLAGS) -I../include
+> 
+> # directories etc.
+> CONF=/usr/src/cnews/conf
+> MAKE=/usr/src/cnews/conf/maker
+> TO=$(CONF)/cpto
+> IN=$(CONF)/cmpto $(CMPOPT)
+> CF=$(CONF)/checkfile $(CMPOPT)
+> MKDIR=$(CONF)/mkdirs
+> MX=chmod +x
+> UPDATE=$(CONF)/update.ran ../libcnews.a
+> LIBCMP=$(CONF)/libcmp ../libcnews.a
+> 
+> # misc configuration bits
+> SPACEFOR=statfs
+> DOSPACEFOR=dospacefor
+> QUEUELEN=hdb
+> UID=news
+> GID=news
+> SIZE=small
+> DBZ=libdbz
+> STDIO=sysstdio
+> SERVER=
+> REPORTTO=jon
+> URGENTTO=jon
+> 
+> # things for testing
+> HERE=. ../conf/rsetup ;
+> 
+> # fake files needed
+> HFAKE= sys/timeb.h
+> OFAKE= fgetline.o putenv.o remove.o fsync.o
+diff -rN ../c-news-orig/conf/histsetup ../PiDP-11-release/conf/histsetup
+6c6
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/conf/makefile ../PiDP-11-release/conf/makefile
+11c11
+< 	sys.eg whoami.eg
+---
+> sys.eg whoami.eg
+27,32c27,37
+< 	if test -d $(NEWSARTS)/$(LASTGROUP) -a -d $(NEWSOV)/$(LASTGROUP) ;\
+< 	then \
+< 		: no adddirs needed ;\
+< 	else \
+< 		$(NEWSBIN)/maint/adddirs ;\
+< 	fi
+---
+> 	: This print statement precedes several lines in the makefile
+> 	: that have been commented out because they fail when run from
+> 	: the makefile, but work when run manually. If compiling new
+> 	: these lines will have to be run, as they will not run automatically
+> 
+> #	if test -d $(NEWSARTS)/$(LASTGROUP) -a -d $(NEWSOV)/$(LASTGROUP) ;\
+> #	then \
+> #		: no adddirs needed ;\
+> #	else \
+> #		$(NEWSBIN)/maint/adddirs ;\
+> #	fi
+73c78
+< 	cd .. ; $(MAKE) $(SIZE) DBZ=$(DBZ) $(STDIO)
+---
+> 	cd .. ; pwd; $(MAKE) $(SIZE) DBZ=$(DBZ) $(STDIO)
+diff -rN ../c-news-orig/conf/makefile.bak ../PiDP-11-release/conf/makefile.bak
+0a1,78
+> # =()<@<INCLUDE>@>()=
+> .include "../include/config.make"
+> 
+> 
+> 
+> A=$(NEWSARTS)
+> C=$(NEWSCTL)
+> NDIRS=$(A) $(A)/in.coming $(A)/in.coming/bad $(A)/out.master $(C) $(C)/bin
+> 
+> EGS=active.eg active.times mailname.eg mailpaths.eg organization\
+> sys.eg whoami.eg
+> ALL=$(EGS) report.ctl crontab $(SERVER)
+> 
+> all:	$(ALL)
+> 	$(MX) report.ctl config histsetup
+> 
+> install:	$(ALL)
+> 
+> LASTGROUP=`egrep -v '=|x$$' $(NEWSCTL)/active | tr . / | sed -n '$$s/ .*//p'`
+> 
+> setup:	$(ALL)
+> 	$(MKDIR) $(NEWSCTL)/bin
+> 	$(TO) -n $(NEWSCTL) report.ctl $(SERVER)
+> 	$(TO) `echo $(NEWSCONFIG) | sed 's;/[^/]*$$;;'` config
+> 	$(TO) -e -n $(NEWSCTL) $(EGS)
+> 	./histsetup
+> 	if test -d $(NEWSARTS)/$(LASTGROUP) -a -d $(NEWSOV)/$(LASTGROUP) ;\
+> 	then \
+> 		: no adddirs needed ;\
+> 	else \
+> 		$(NEWSBIN)/maint/adddirs ;\
+> 	fi
+> 
+> versetup:
+> 	$(TO) $(NEWSCTL) versionname
+> 
+> cmp:	$(ALL)
+> 	: make sure major directories have right ownership
+> 	@$(CF) $(UID) $(GID) '^drwx' $(NDIRS)
+> 	: compare some files
+> 	@$(IN) -i $(NEWSCTL) report.ctl
+> 	@$(IN) `echo $(NEWSCONFIG) | sed 's;/[^/]*$$;;'` config
+> 	@$(IN) $(NEWSCTL) versionname
+> 	: make sure the whoami and mailname files have been configured
+> 	test " `cat $(NEWSCTL)/whoami`" != " nosuchsite" ;
+> 	test " `cat $(NEWSCTL)/mailname`" != " no.such.domain" ;
+> 	: check that crucial files exist
+> 	test -r $(NEWSCTL)/history ;
+> 	test -s $(NEWSCTL)/history.dir ;
+> 	test -r $(NEWSCTL)/history.pag ;
+> 	: check that the last newsgroup in active has directories -- too
+> 	: expensive to check all of them
+> 	test -d $(NEWSARTS)/$(LASTGROUP) -a -d $(NEWSOV)/$(LASTGROUP) ;
+> 
+> mx:
+> 	$(MX) checkfile cmpto cpto inall libcmp maker
+> 	$(MX) mkdirs rconfig rsetup subst update.*
+> 
+> active.times:	active.eg
+> 	sed 's/ .*/ 0 unknown/' active.eg >$@
+> 
+> crontab:	cron.proto
+> 	egrep -v '^#' cron.proto >$@
+> 
+> server:	../include/config.make
+> 	echo "$(SERVERNAME)" >$@
+> 
+> report.ctl:	../include/config.make
+> 	echo "urgentto=$(URGENTTO)" >$@
+> 	echo "nonurgentto=$(REPORTTO)" >>$@
+> 
+> liblist:
+> 	cd .. ; $(MAKE) $(SIZE) DBZ=$(DBZ) $(STDIO)
+> 
+> r rclean:	$(ALL)
+> 
+> clean:
+> 	rm -f active.times crontab server report.ctl
+diff -rN ../c-news-orig/conf/rconfig ../PiDP-11-release/conf/rconfig
+12c12
+< NEWSPATH=${NEWSPATH-/bin:/usr/bin:/usr/contrib/bin}
+---
+> NEWSPATH=${NEWSPATH-/bin:/usr/bin:/usr/ucb:/usr/local/bin}
+diff -rN ../c-news-orig/conf/rsetup ../PiDP-11-release/conf/rsetup
+0a1
+> #!/bin/sh
+13c14
+< NEWSPATH=/bin:/usr/bin:/usr/contrib/bin
+---
+> NEWSPATH=/bin:/usr/bin:/usr/ucb:/usr/local/bin
+diff -rN ../c-news-orig/conf/update.ran ../PiDP-11-release/conf/update.ran
+0a1
+> #!/bin/sh
+diff -rN ../c-news-orig/conf/versionname ../PiDP-11-release/conf/versionname
+1c1
+< Cleanup Release, with patch CR.G
+---
+> PiDP-11 release, version 1.1.0-jwb 
+diff -rN ../c-news-orig/contrib/snntp/snntpsend ../PiDP-11-release/contrib/snntp/snntpsend
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/COPYRIGHT ../PiDP-11-release/COPYRIGHT
+0a1,14
+> /* The patch in the PiDP-11-patch directory, which contains the changes between the
+>  * c-news-orig directory and the PiDP-11-release directory is (c) Jon Brase 2020.
+>  * It remains under the same terms as the original code. The original contents of the
+>  * COPYRIGHT file are included unchanged below the dashed line, and in the COPYRIGHT file 
+>  * in the c-news-orig directory. The original terms request, but do not require that the
+>  * sponsorship information in the README and the sponsors directory be retained.
+>  * As 25 years have elapsed, and ClariNet is defunct while UUNET has been absorbed by
+>  * Verizon, I have opted not to retain this sponsorship information in the PiDP-11-release
+>  * directory. It is retained in the c-news-orig directory, as that is a verbatim copy of
+>  * the original C-news sources.
+>  */
+> 
+> ----------------------------------------------------------------------------------------
+> 
+diff -rN ../c-news-orig/ctl/checkgroups ../PiDP-11-release/ctl/checkgroups
+7c7
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/ctl/delsendsys ../PiDP-11-release/ctl/delsendsys
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/ctl/delversion ../PiDP-11-release/ctl/delversion
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/ctl/dodelayed ../PiDP-11-release/ctl/dodelayed
+4c4
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/ctl/makefile ../PiDP-11-release/ctl/makefile
+60c60,61
+< 	echo '( echo $$* ; echo ::: ; cat ) >>'`pwd`/reports >bin/report
+---
+> 	echo "#!/bin/sh" >bin/report
+> 	echo '( echo $$* ; echo ::: ; cat ) >>'`pwd`/reports >>bin/report
+diff -rN ../c-news-orig/ctl/newgroup ../PiDP-11-release/ctl/newgroup
+11c11
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/ctl/newsreply ../PiDP-11-release/ctl/newsreply
+7c7
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/ctl/rmgroup ../PiDP-11-release/ctl/rmgroup
+10c10
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/ctl/sendsys ../PiDP-11-release/ctl/sendsys
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/ctl/version ../PiDP-11-release/ctl/version
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/doc/config ../PiDP-11-release/doc/config
+155c155
+< \&. ${NEWSCONFIG\-/etc/news/bin/config}
+---
+> \&. ${NEWSCONFIG\-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/doc/install ../PiDP-11-release/doc/install
+473c473
+< .Fn NEWSCTL /bin
+---
+> .I NEWSCTL /bin
+486c486
+< .Fn "" active
+---
+> .I active
+495c495
+< .Fn NEWSBIN /relay/relaynews ,
+---
+> .I NEWSBIN /relay/relaynews ,
+499c499
+< .Fn "" active
+---
+> .I active
+505c505
+< .Fn "" sys
+---
+> .I sys
+526c526
+< .Fn "" server
+---
+> .I server
+530c530
+< .Fn "" whoami
+---
+> .I whoami
+535c535
+< .Fn "" mailname
+---
+> .I mailname
+542c542
+< .Fn "" organisation
+---
+> .I organisation
+548c548
+< .Fn "" organization
+---
+> .I organization
+556c556
+< .Fn "" mailpaths
+---
+> .I mailpaths
+560c560
+< .Fn "" log ,
+---
+> .I log ,
+563c563
+< .Fn "" errlog ,
+---
+> .I errlog ,
+566c566
+< .Fn "" history ,
+---
+> .I history ,
+569c569
+< .Fn "" history.dir ,
+---
+> .I history.dir ,
+573c573
+< .Fn "" history.pag
+---
+> .I history.pag
+579c579
+< .Fn "" explist
+---
+> .I explist
+604c604
+< .Fn \& conf
+---
+> .I conf
+608c608
+< .Fn \& build ,
+---
+> .I build ,
+617c617
+< .Fn \& build 's
+---
+> .I build 's
+623c623
+< .Fn \& build
+---
+> .I build
+626c626
+< .Fn \& Build
+---
+> .I Build
+630c630
+< .Fn \& conf
+---
+> .I conf
+635c635
+< .Fn \& build
+---
+> .I build
+640c640
+< .Fn \& doit.root ,
+---
+> .I doit.root ,
+642c642
+< .Fn \& doit.bin ,
+---
+> .I doit.bin ,
+644c644
+< .Fn \& doit.news ,
+---
+> .I doit.news ,
+647c647
+< .Fn \& again.root .
+---
+> .I again.root .
+650c650
+< .Fn \& Doit.root
+---
+> .I Doit.root
+657c657
+< .Fn \& Doit.bin
+---
+> .I Doit.bin
+663c663
+< .Fn \& doit.bin
+---
+> .I doit.bin
+683c683
+< .Fn \& Doit.news
+---
+> .I Doit.news
+689c689
+< .Fn \& doit.bin ,
+---
+> .I doit.bin ,
+693c693
+< .Fn \& again.root
+---
+> .I again.root
+701c701
+< .Fn \& build
+---
+> .I build
+706c706
+< .Fn \& Makefile s
+---
+> .I Makefile s
+715c715
+< .Fn NEWSCTL /bin/config ,
+---
+> .I NEWSCTL /bin/config ,
+728c728
+< .Fn NEWSBIN ""
+---
+> .I NEWSBIN ""
+740c740
+< .Fn NEWSCTL /bin/config.
+---
+> .I NEWSCTL /bin/config.
+743c743
+< .Fn NEWSCTL /bin/config
+---
+> .I NEWSCTL /bin/config
+802c802
+< .Fn \& h/news.h
+---
+> .I h/news.h
+805c805
+< .Fn \& build
+---
+> .I build
+818c818
+< .Fn NEWSCTL /errlog
+---
+> .I NEWSCTL /errlog
+855c855
+< .Fn NEWSCTL /log
+---
+> .I NEWSCTL /log
+871c871
+< .Fn NEWSCTL /sys
+---
+> .I NEWSCTL /sys
+875c875
+< .Fn NEWSARTS /out.going/ site).
+---
+> .I NEWSARTS /out.going/ site).
+895c895
+< .Fn NEWSBIN "/input/newsrunning off"
+---
+> .I NEWSBIN "/input/newsrunning off"
+897c897
+< .Fn NEWSBIN "/input/newsrunning on".
+---
+> .I NEWSBIN "/input/newsrunning on".
+938c938
+< .Fn NEWSCTL /sys
+---
+> .I NEWSCTL /sys
+diff -rN ../c-news-orig/expire/doexpire ../PiDP-11-release/expire/doexpire
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/expire/expireiflow ../PiDP-11-release/expire/expireiflow
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/expire/makefile ../PiDP-11-release/expire/makefile
+91,94c91,98
+< 	echo 'exit 0' >bin/lock
+< 	echo 'exit 0' >bin/unlock
+< 	echo 'echo 10' >bin/spacefor
+< 	echo 'echo fred' >bin/newshostname
+---
+> 	echo '#!/bin/sh' >bin/lock
+> 	echo 'exit 0' >>bin/lock
+> 	echo '#!/bin/sh' >bin/lock
+> 	echo 'exit 0' >>bin/unlock
+> 	echo '#!/bin/sh' >bin/spacefor
+> 	echo 'echo 10' >>bin/spacefor
+> 	echo '#!/bin/sh' >bin/newshostname
+> 	echo 'echo fred' >>bin/newshostname
+229c233,234
+< 	echo "sed '/bletch/s/099/100/' active >active.up" >junk
+---
+> 	echo "#!/bin/sh" >junk
+> 	echo "sed '/bletch/s/099/100/' active >active.up" >>junk
+diff -rN ../c-news-orig/expire/upact ../PiDP-11-release/expire/upact
+7c7
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+63c63
+< 	awk 'BEGIN {
+---
+> 	(PATH=/bin exec awk 'BEGIN {
+83,84c83,84
+< 	}' | sh 2>$lserr |
+< 	awk -F' ' 'BEGIN {
+---
+> 	}') | sh 2>$lserr |
+> 	(PATH=/bin exec awk -F' ' 'BEGIN {
+110c110
+< 	}' | tr '/' '.' | sort |
+---
+> 	}') | tr '/' '.' | sort |
+147c147
+< awk '{ print $1, $2, $3, $4, NR }' active | sort |
+---
+> (PATH=/bin exec awk '{ print $1, $2, $3, $4, NR }' active ) | sort |
+150c150
+< 	awk 'BEGIN { OFMT = "%.12g" }
+---
+> 	(PATH=/bin exec awk 'BEGIN { OFMT = "%.12g" }
+167c167
+< 	}' >active.tmp
+---
+> 	}') >active.tmp
+diff -rN ../c-news-orig/explode/doexplode ../PiDP-11-release/explode/doexplode
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/explode/makefile ../PiDP-11-release/explode/makefile
+34,39c34,45
+< 	echo "exit 0" >bin/lock
+< 	echo "exit 0" >bin/unlock
+< 	echo "echo 5" >bin/sizeof
+< 	echo "echo 1000" >bin/spacefor
+< 	echo "( echo \"\$$*\" ; echo ::: ; cat ) >&2" >bin/report
+< 	echo "echo 12345" >bin/now
+---
+> 	echo "#!/bin/sh" >bin/lock
+> 	echo "exit 0" >>bin/lock
+> 	echo "#!/bin/sh" >bin/unlock
+> 	echo "exit 0" >>bin/unlock
+> 	echo "#!/bin/sh" >bin/sizeof
+> 	echo "echo 5" >>bin/sizeof
+> 	echo "#!/bin/sh" >bin/spacefor
+> 	echo "echo 1000" >>bin/spacefor
+> 	echo "#!/bin/sh" >bin/report
+> 	echo "( echo \"\$$*\" ; echo ::: ; cat ) >&2" >>bin/report
+> 	echo "#!/bin/sh" >bin/now
+> 	echo "echo 12345" >>bin/now
+diff -rN ../c-news-orig/include/config.make.orig ../PiDP-11-release/include/config.make.orig
+0a1,59
+> 	:include/config.make is being included.
+> # make header file
+> # pathname variables
+> # =()<NEWSARTS=@<NEWSARTS>@>()=
+> NEWSARTS=/var/news
+> # =()<NEWSOV=@<NEWSOV>@>()=
+> NEWSOV=/var/news
+> # =()<NEWSBIN=@<NEWSBIN>@>()=
+> NEWSBIN=/usr/libexec/news
+> # =()<NEWSCTL=@<NEWSCTL>@>()=
+> NEWSCTL=/usr/etc/news
+> # =()<NEWSCONFIG=@<NEWSCONFIG>@>()=
+> NEWSCONFIG=/usr/etc/news/bin/config
+> 
+> # workaround for System V make bug
+> SHELL=/bin/sh
+> 
+> # directories where things go
+> UIBIN=/usr/bin
+> RBIN=/usr/libexec/news/input
+> 
+> # compilation stuff
+> # LIB is for makefile dependencies, LIBS for cc invocations
+> LIB=../libcnews.a
+> LIBS=../libcnews.a 
+> CFLAGS=$(MORECFLAGS) -O -DSMALLMEM -I../include
+> LDFLAGS=$(CFLAGS) 
+> LINTFLAGS=$(MORELINTFLAGS) -I../include
+> 
+> # directories etc.
+> CONF=../conf
+> MAKE=make
+> TO=$(CONF)/cpto
+> IN=$(CONF)/cmpto $(CMPOPT)
+> CF=$(CONF)/checkfile $(CMPOPT)
+> MKDIR=$(CONF)/mkdirs
+> MX=chmod +x
+> UPDATE=$(CONF)/update.ran ../libcnews.a
+> LIBCMP=$(CONF)/libcmp ../libcnews.a
+> 
+> # misc configuration bits
+> SPACEFOR=statfs
+> DOSPACEFOR=dospacefor
+> QUEUELEN=hdb
+> UID=news
+> GID=news
+> SIZE=small
+> DBZ=libdbz
+> STDIO=ourstdio
+> SERVER=
+> REPORTTO=jon
+> URGENTTO=jon
+> 
+> # things for testing
+> HERE=. ../conf/rsetup ;
+> 
+> # fake files needed
+> HFAKE= sys/timeb.h
+> OFAKE= fsync.o
+diff -rN ../c-news-orig/inject/inews ../PiDP-11-release/inject/inews
+13c13
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+120d119
+< 
+diff -rN ../c-news-orig/inject/injnews ../PiDP-11-release/inject/injnews
+9c9
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+76c76
+< ngs=` awk '
+---
+> ngs=` (PATH=/bin origpath="" exec awk '
+81c81
+< 	' $inhdrs `
+---
+> 	' $inhdrs) `
+diff -rN ../c-news-orig/inject/makefile ../PiDP-11-release/inject/makefile
+7c7
+< PROGS=$(BINS) defhdrs.awk inews lines modroute injnews pnews tear
+---
+> PROGS=$(BINS) defhdrs.awk inews lines modroute injnews pnews tear tear-helper.awk
+diff -rN ../c-news-orig/inject/modroute ../PiDP-11-release/inject/modroute
+4c4
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/inject/pnews ../PiDP-11-release/inject/pnews
+7c7
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/inject/tear ../PiDP-11-release/inject/tear
+5a6,12
+> if [ $LOGNAME = regression ]
+> then
+> TEAR_HELPER=$NEWSBIN/tear-helper.awk
+> else
+> TEAR_HELPER=$NEWSBIN/inject/tear-helper.awk
+> fi
+> 
+16a24,25
+> export hdr body
+> 
+22a32
+> 
+24,42c34,39
+< exec awk 'BEGIN {
+< 	inbody = 0
+< 	status = 0
+< 	hdr = "'"$hdr"'"
+< 	body = "'"$body"'"
+< }
+< /^$/ { inbody = 1 }
+< inbody == 0 && ($0 ~ /^[^ \t]*:/ || ($0 ~ /^[ \t]/ && NR > 1)) {
+< 	print >hdr
+< 	next
+< }
+< inbody == 0 {
+< 	print "tear: invalid header \"" $0 "\"" | "cat >&2"
+< 	status = 1
+< }
+< inbody == 1 {
+< 	print >body
+< }
+< END { exit status }' $args
+---
+> # The above comment was in the original C-news sources
+> 
+> # This needed to be split out into a separate file, as the 2.11 BSD shell
+> # wouldn't handle the long awk statement inline
+> # This comment was added by Jon Brase in 2020
+> (echo $hdr $body ;  cat $args ; ) | exec awk -f $TEAR_HELPER - 
+diff -rN ../c-news-orig/inject/tear-helper.awk ../PiDP-11-release/inject/tear-helper.awk
+0a1,22
+> BEGIN { 
+> 	inbody = 0
+>         status = 0
+> }
+> NR == 1 {
+> 	hdr = $1
+> 	body = $2
+> 	next
+> }
+> /^$/ { inbody = 1 }
+> inbody == 0 && ($0 ~ /^[^ \t]*:/ || ($0 ~ /^[ \t]/ && NR > 2)) {
+>         print >hdr
+>         next
+> }
+> inbody == 0 {
+>         print "tear: invalid header \"" $0 "\"" | "cat >&2"
+>         status = 1
+> }
+> inbody == 1 {
+>         print >body
+> }
+> END { exit status }
+diff -rN ../c-news-orig/input/gunzip ../PiDP-11-release/input/gunzip
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/input/makefile ../PiDP-11-release/input/makefile
+110,119c110,129
+< 	echo "shift;shift;shift;cat \$$* >>`pwd`/tmp.1" >bin/relaynews
+< 	echo "echo 10" >bin/spacefor
+< 	echo ':' >bin/lock
+< 	echo ':' >bin/unlock
+< 	echo ':' >bin/touchlock
+< 	echo 'echo 10' >bin/sizeof
+< 	echo ':' >bin/staleness
+< 	echo ':' >bin/doexplode
+< 	echo 'echo "$$*" ; cat >&2' >bin/report
+< 	echo ':' >bin/domkov
+---
+> 	echo "#!/bin/sh" > bin/relaynews
+> 	echo "shift;shift;shift;cat \$$* >>`pwd`/tmp.1" >>bin/relaynews
+> 	echo "#!/bin/sh" > bin/spacefor
+> 	echo "echo 10" >>bin/spacefor
+> 	echo "#!/bin/sh" >bin/lock
+> 	echo ':' >>bin/lock
+> 	echo "#!/bin/sh" >bin/unlock
+> 	echo ':' >>bin/unlock
+> 	echo "#!/bin/sh" >bin/touchlock
+> 	echo ':' >>bin/touchlock
+> 	echo "#!/bin/sh" >bin/sizeof
+> 	echo 'echo 10' >>bin/sizeof
+> 	echo "#!/bin/sh" >bin/staleness
+> 	echo ':' >>bin/staleness
+> 	echo "#!/bin/sh" >bin/doexplode
+> 	echo ':' >>bin/doexplode
+> 	echo "#!/bin/sh" >bin/report
+> 	echo 'echo "$$*" ; cat >&2' >>bin/report
+> 	echo "#!/bin/sh" >bin/domkov
+> 	echo ':' >>bin/domkov
+121c131,132
+< 	echo 'sed 1d' >decompressors/dejunk
+---
+> 	echo "#!/bin/sh" >decompressors/dejunk
+> 	echo 'sed 1d' >>decompressors/dejunk
+diff -rN ../c-news-orig/input/newsrun ../PiDP-11-release/input/newsrun
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/input/newsrunning ../PiDP-11-release/input/newsrunning
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/input/recenews ../PiDP-11-release/input/recenews
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/input/recpnews ../PiDP-11-release/input/recpnews
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/input/rnews ../PiDP-11-release/input/rnews
+7c7
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/libcnews/config.c ../PiDP-11-release/libcnews/config.c
+17c17
+< #define	NEWSCTL	"/etc/news"
+---
+> #define	NEWSCTL	"/usr/etc/news"
+21c21
+< #define	NEWSPATH	"/bin:/usr/bin:/usr/contrib/bin"
+---
+> #define	NEWSPATH	"/bin:/usr/bin:/usr/ucb:/usr/local/bin"
+25c25
+< #define	NEWSARTS	"/var/news"
+---
+> #define	NEWSARTS	"/usr/spool/news"
+37c37
+< #define	NEWSCONFIG	"/etc/news/bin/config"
+---
+> #define	NEWSCONFIG	"/usr/etc/news/bin/config"
+diff -rN ../c-news-orig/libdbz/altbytes ../PiDP-11-release/libdbz/altbytes
+0a1
+> #!/bin/sh
+diff -rN ../c-news-orig/libdbz/dbz.c ../PiDP-11-release/libdbz/dbz.c
+414c414,419
+< 	switch (tagmask) {
+---
+> 	/*Originally switch(tagmask), but the 2.11BSD compiler won't switch on
+> 	an of_t (that is, a long). So we cast tagmask to a 16-bit int, then
+> 	or the high bit of that with the result of testing if tagmask is a
+> 	greater than 2^16, which gives the correct behavior for selecting
+> 	between case 1 and case default*/ 
+> 	switch ( (int)tagmask | (int)((tagmask >= 0x10000) << 15)) {
+diff -rN ../c-news-orig/libdbz/getmap ../PiDP-11-release/libdbz/getmap
+0a1,2
+> #!/bin/sh
+> PATH=/bin
+diff -rN ../c-news-orig/libdbz/revbytes ../PiDP-11-release/libdbz/revbytes
+0a1
+> #!/bin/sh
+diff -rN ../c-news-orig/libsmall/makefile ../PiDP-11-release/libsmall/makefile
+14a15
+> 	../conf/update.ran ../libcnews.a active.slow.o
+diff -rN ../c-news-orig/maint/act.to.times ../PiDP-11-release/maint/act.to.times
+4c4
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/maint/adddirs ../PiDP-11-release/maint/adddirs
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+10c10
+< for dir in `awk '$4 !~ /^[x=]/ { print $1 }' $NEWSCTL/active | tr . /`
+---
+> for dir in `(PATH=/bin exec awk '$4 !~ /^[x=]/ { print $1 }' $NEWSCTL/active) | tr . /`
+diff -rN ../c-news-orig/maint/addgroup ../PiDP-11-release/maint/addgroup
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+28c28
+< already="`awk '\$1 == \"'"$1"'\"' $NEWSCTL/active`"
+---
+> already="`(PATH=/bin exec awk '\$1 == \"'"$1"'\"' $NEWSCTL/active)`"
+diff -rN ../c-news-orig/maint/addmissing ../PiDP-11-release/maint/addmissing
+6c6
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+62c62
+< 	awk -f $NEWSBIN/maint/histdups |
+---
+> 	(PATH=/bin exec awk -f $NEWSBIN/maint/histdups) |
+Binary files ../c-news-orig/maint/awk.core and ../PiDP-11-release/maint/awk.core differ
+diff -rN ../c-news-orig/maint/badexpiry ../PiDP-11-release/maint/badexpiry
+6c6
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+19c19
+< 	awk -F'	' 'NF > 2 {
+---
+> 	(PATH=/bin exec awk -F'	' 'NF > 2 {
+26c26
+< 	}' | tr . / | xargs $NEWSBIN/sizeof -i | sed 's;/[^/]* ; ;' |
+---
+> 	}') | tr . / | xargs $NEWSBIN/sizeof -i | sed 's;/[^/]* ; ;' |
+28c28
+< 	awk '{
+---
+> 	(PATH=/bin exec awk '{
+38c38
+< 	}' |
+---
+> 	}') |
+44c44
+< 	awk '	{ bad = "" }
+---
+> 	(PATH=/bin exec awk '	{ bad = "" }
+56c56
+< 		}'
+---
+> 		}')
+diff -rN ../c-news-orig/maint/checkactive ../PiDP-11-release/maint/checkactive
+8c8
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+53c53
+< awk 'BEGIN { status = 0 ; q = "\"" }
+---
+> ( PATH=/bin origpath="" exec awk 'BEGIN { status = 0 ; q = "\"" }
+66c66
+< END { exit status }' $file || exit
+---
+> END { exit status }' $file ) || exit
+68c68
+< awk '{print $1}' $file | sort | uniq -d >$tmp
+---
+> (PATH=/bin origpath="" exec awk '{print $1}' $file) | sort | uniq -d >$tmp
+76,77c76,77
+< awk '$4 ~ /^=/ { print substr($4, 2) }' $file | sort -u >$tmp
+< awk '{ print $1 }' $file | sort -u | comm -13 - $tmp >$tmpb
+---
+> (PATH=/bin origpath="" exec awk '$4 ~ /^=/ { print substr($4, 2) }' $file) | sort -u >$tmp
+> (PATH=/bin origpath="" exec awk '{ print $1 }' $file) | sort -u | comm -13 - $tmp >$tmpb
+86c86
+< gngppat=`awk -f $NEWSBIN/canonsys.awk $NEWSCTL/sys |
+---
+> gngppat=`(PATH=/bin origpath="" exec awk -f $NEWSBIN/canonsys.awk $NEWSCTL/sys) |
+88c88
+< 	awk -F: '
+---
+> 	(PATH=/bin origpath="" exec awk -F: '
+96,97c96,97
+< }' `
+< awk '$1 !~ /^(control|junk)$/ { print $1 }' $file | gngp -a -v "$gngppat" >$tmp
+---
+> }') `
+> (PATH=/bin origpath="" exec awk '$1 !~ /^(control|junk)$/ { print $1 }' $file) | gngp -a -v "$gngppat" >$tmp
+130c130
+< 	echo "$newsgroup" | awk -f $NEWSBIN/namecheck.awk |
+---
+> 	echo "$newsgroup" | (PATH=/bin origpath="" exec awk -f $NEWSBIN/namecheck.awk) |
+diff -rN ../c-news-orig/maint/cnewsdo ../PiDP-11-release/maint/cnewsdo
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+15c15,16
+< me=`ls -l /tmp/cn$$ | awk '{print $3}'`
+---
+> 
+> me=`ls -l /tmp/cn$$ | ( PATH=/bin NEWSPATH="" NEWSCONFIG="" HOME="" exec awk '{print $3}')`
+17c18
+< news=`ls -l $NEWSCTL/active | awk '{print $3}'`
+---
+> news=`ls -l $NEWSCTL/active | ( PATH=/bin NEWSPATH="" NEWSCONFIG="" HOME="" exec awk '{print $3}')`
+diff -rN ../c-news-orig/maint/delgroup ../PiDP-11-release/maint/delgroup
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+21c21
+< already="`awk '\$1 == \"'"$1"'\"' $NEWSCTL/active`"
+---
+> already="`(PATH=/bin exec awk '\$1 == \"'"$1"'\"' $NEWSCTL/active)`"
+33c33
+< awk "\$1 != \"$1\"" active >active.tmp
+---
+> (PATH=/bin exec awk "\$1 != \"$1\"" active) >active.tmp
+35c35
+< awk "\$1 != \"$1\"" active.times >active.times.t
+---
+> (PATH=/bin exec awk "\$1 != \"$1\"" active.times) >active.times.t
+diff -rN ../c-news-orig/maint/histfrom ../PiDP-11-release/maint/histfrom
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+30c30
+< egrep '	.*	' $NEWSCTL/history | awk -F'	' '{
+---
+> egrep '	.*	' $NEWSCTL/history | (PATH=/bin exec awk -F'	' '{
+35c35
+< }'
+---
+> }')
+diff -rN ../c-news-orig/maint/locknews ../PiDP-11-release/maint/locknews
+4c4
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/maint/logroll ../PiDP-11-release/maint/logroll
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/maint/makefile ../PiDP-11-release/maint/makefile
+55,58c55,62
+< 	echo 'exit 0' >bin/lock
+< 	echo 'exit 0' >bin/unlock
+< 	echo 'echo here' >bin/newshostname
+< 	echo 'echo 0' >bin/now
+---
+> 	echo "#!/bin/sh" >bin/lock
+> 	echo 'exit 0' >>bin/lock
+> 	echo "#!/bin/sh" >bin/unlock
+> 	echo 'exit 0' >>bin/unlock
+> 	echo "#!/bin/sh" >bin/newshostname
+> 	echo 'echo here' >>bin/newshostname
+> 	echo "#!/bin/sh" >bin/now
+> 	echo 'echo 0' >>bin/now
+diff -rN ../c-news-orig/maint/mergeactive ../PiDP-11-release/maint/mergeactive
+59,60c59,60
+< awk '{ print $1, $4 }' $tmp | sort >$tmpb
+< sort active | join -a2 - $tmpb | awk 'NF == 2' >$tmp
+---
+> (PATH=/bin exec awk '{ print $1, $4 }' $tmp) | sort >$tmpb
+> sort active | join -a2 - $tmpb | (PATH=/bin exec awk 'NF == 2') >$tmp
+64c64
+< awk '{ print $1, "0000000000", "00001", $2 }' $tmp >>active.tmp
+---
+> (PATH=/bin exec awk '{ print $1, "0000000000", "00001", $2 }' $tmp) >>active.tmp
+diff -rN ../c-news-orig/maint/mkhistory ../PiDP-11-release/maint/mkhistory
+9c9
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+43c43
+< 	sort $SORTTMP | awk -f $NEWSBIN/maint/histdups |
+---
+> 	sort $SORTTMP | (PATH=/bin exec awk -f $NEWSBIN/maint/histdups) |
+57c57
+< 	dbzparm="-p `echo $size $sizemul | awk \"$awkpgm\"`"
+---
+> 	dbzparm="-p `echo $size $sizemul | (PATH=/bin exec awk \"$awkpgm\")`"
+diff -rN ../c-news-orig/maint/newsboot ../PiDP-11-release/maint/newsboot
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/maint/newsdaily ../PiDP-11-release/maint/newsdaily
+146c146
+< 	awk '{print $4}' | sort | uniq -c | sort -nr | sed 5q >$tmp
+---
+> 	(PATH=/bin exec awk '{print $4}') | sort | uniq -c | sort -nr | sed 5q >$tmp
+156c156
+< 	egrep ' - ' | awk '{print $4}' | sort | uniq -c | sort -nr |
+---
+> 	egrep ' - ' | (PATH=/bin exec awk '{print $4}') | sort | uniq -c | sort -nr |
+222c222
+< 	obsoleteness=`echo "$usedat $oldest" | awk '{ print $1 - $2 + 10000 }'`
+---
+> 	obsoleteness=`echo "$usedat $oldest" | (PATH=/bin exec awk '{ print $1 - $2 + 10000 }')`
+diff -rN ../c-news-orig/maint/newsflag ../PiDP-11-release/maint/newsflag
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+23c23
+< if awk 'BEGIN { found = 0 }
+---
+> if (PATH=/bin exec awk 'BEGIN { found = 0 }
+31c31
+< 	}' active >active.new
+---
+> 	}' active >active.new)
+diff -rN ../c-news-orig/maint/newsfrom ../PiDP-11-release/maint/newsfrom
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/maint/newshist ../PiDP-11-release/maint/newshist
+4c4
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/maint/newswatch ../PiDP-11-release/maint/newswatch
+6c6
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+76c76
+< if awk "END { if ($age < $now - 8*3600) exit 0 ; else exit 1 ; }" /dev/null
+---
+> if (PATH=/bin exec awk "END { if ($age < $now - 8*3600) exit 0 ; else exit 1 ; }" /dev/null)
+diff -rN ../c-news-orig/maint/sysck ../PiDP-11-release/maint/sysck
+4c4
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/makefile ../PiDP-11-release/makefile
+2c2
+< MAKE=make
+---
+> MAKE=/usr/src/cnews/conf/maker
+86c86
+< 	cd conf ; make mx
+---
+> 	cd conf ; $(MAKE) mx
+diff -rN ../c-news-orig/man/badexpiry.8cn ../PiDP-11-release/man/badexpiry.8cn
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/checkactive.8 ../PiDP-11-release/man/checkactive.8
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/checknews.1cn ../PiDP-11-release/man/checknews.1cn
+2c2
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/cnewsdo.8cn ../PiDP-11-release/man/cnewsdo.8cn
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/controlperm.5 ../PiDP-11-release/man/controlperm.5
+2c2
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/expire.8cn ../PiDP-11-release/man/expire.8cn
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/explode.8cn ../PiDP-11-release/man/explode.8cn
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/inews.1cn ../PiDP-11-release/man/inews.1cn
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/mergeactive.8 ../PiDP-11-release/man/mergeactive.8
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/mkhistory.8cn ../PiDP-11-release/man/mkhistory.8cn
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/news.5 ../PiDP-11-release/man/news.5
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/newsaux.8cn ../PiDP-11-release/man/newsaux.8cn
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/newsbatch.8cn ../PiDP-11-release/man/newsbatch.8cn
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/newsctl.5 ../PiDP-11-release/man/newsctl.5
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/newsdb.5 ../PiDP-11-release/man/newsdb.5
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/newsflag.8cn ../PiDP-11-release/man/newsflag.8cn
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/newsmail.8cn ../PiDP-11-release/man/newsmail.8cn
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/newsmaint.8cn ../PiDP-11-release/man/newsmaint.8cn
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/newsoverview.5 ../PiDP-11-release/man/newsoverview.5
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/newsoverview.8 ../PiDP-11-release/man/newsoverview.8
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/newssys.5 ../PiDP-11-release/man/newssys.5
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/postnews.1cn ../PiDP-11-release/man/postnews.1cn
+2c2
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/readnews.1cn ../PiDP-11-release/man/readnews.1cn
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/relaynews.8cn ../PiDP-11-release/man/relaynews.8cn
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/report.8cn ../PiDP-11-release/man/report.8cn
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/man/rnews.8cn ../PiDP-11-release/man/rnews.8cn
+2c2
+< .ds a /var/news
+---
+> .ds a /usr/spool/news
+6c6
+< .ds c /etc/news
+---
+> .ds c /usr/etc/news
+diff -rN ../c-news-orig/nov/domkov ../PiDP-11-release/nov/domkov
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/nov/expov ../PiDP-11-release/nov/expov
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/nov/initov ../PiDP-11-release/nov/initov
+5c5,9
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+> 
+> WORKAROUND=` awk '{print $1}' $NEWSCTL/active | tr . / | sort `
+> export WORKAROUND 
+> echo $WORKAROUND
+32c36,46
+< for d in ` awk '{print $1}' $NEWSCTL/active | tr . / | sort `
+---
+> 
+> # Originally this was "for d in ` awk ... `, but the pipeline dumped core
+> # when started with the whole environment. Assigning the result of the
+> # pipeline to a variable before the other things the script does 
+> # allowed this to execute. Probably a result of the restricted address space 
+> # of the PDP-11. The three commented out lines below are duplicated at the
+> # top of the script 
+> #WORKAROUND=` awk '{print $1}' $NEWSCTL/active | tr . / | sort `
+> #export WORKAROUND 
+> #echo $WORKAROUND
+> for d in $WORKAROUND
+diff -rN ../c-news-orig/nov/makefile ../PiDP-11-release/nov/makefile
+37,38c37,40
+< 	echo "exit 0" >bin/lock
+< 	echo "exit 0" >bin/unlock
+---
+> 	echo "#!/bin/sh" >bin/lock
+> 	echo "exit 0" >>bin/lock
+> 	echo "#!/bin/sh" >bin/unlock
+> 	echo "exit 0" >>bin/unlock
+diff -rN ../c-news-orig/README ../PiDP-11-release/README
+0a1,21
+> PiDP-11 release of C News, version 1.1.0-jwb			July 2020
+> 
+> This release can be obtained from my github repository at <https://www.github.com/jwbrase>. 
+> I also have a copy of the original Cleanup Release with patch CR.G sources, which I
+> originally obtained from:
+> 
+> <https://www.tuhs.org/Archive/Applications/News/C-News/Apr_1995_Release/c-news.tar.Z>.
+> 
+> See README.changes for what's changed since patch CR.G, README.install for
+> installation instructions and a pointer to my installation howto, and 
+> README.etc for general notes. The documentation in doc/ was apparently out of
+> date as of CR.G, but the changes I've made are relatively minor, so the 
+> documentation shouldn't be much more out of date than it was 25 years ago :-).
+> 
+> The original text of the README file from CR.G follows after the dashes below.
+> Obviously, the instructions there for obtaining C-News are going to be long
+> out of date, see the github and tuhs.org links above.
+> 
+> ---------------------------------------------------------------------------
+>  
+> 
+13,19d33
+< 
+< We are grateful for financial support of C News development by the
+< following, none of whom are to blame for the final result (some more
+< detailed information can be found in the "sponsors" directory):
+< 
+< UUNET Communications Services Inc.	(provider of Usenet news feeds)
+< ClariNet Communications Corp.	(publisher of a Usenet-format E-newspaper)
+diff -rN ../c-news-orig/README.changes ../PiDP-11-release/README.changes
+0a1,50
+> High points of PiDP-11 release 1.1.0-jwb: 
+> The PiDP-11 release contains light modifications to C-News Cleanup Release 
+> with patch CR.G, and so it probably could be called patch CR.H. However, I have
+> called it the "PiDP-11 Release" because:
+> 
+> 1) Patch CR.G was released 25 years ago.
+> 2) I am not the original author of the code.
+> 3) I developed these modifications specifically for the PiDP-11 community, 
+> and the changes pertain to getting C-News working on 2.11 BSD.
+> 4) While patch CR.G is *to my knowledge* the last patch by the original
+> authors, items 1) and 2) mean that there could be an existing patch CR.H
+> that I do not know about. 
+> 
+> I have therefore decided to disambiguate my work from any other patches
+> deriving from CR.G by designating it as a new release. The motivation for
+> the release is to make C-News usable under 2.11 BSD on the PiDP-11. The
+> PiDP-11 is scaled-down replica PDP-11/70 front panel by Oscar Vermeulen
+> driven by a Raspberry Pi emulating a PDP-11 via simh (one community member,
+> however, is driving his panel directly with an FPGA PDP-11 implementation).
+> 
+> As the original C-News does not seem to have a version number in the modern
+> style, I have labeled my first release as "version 1.1.0-jwb". As this is,
+> as far as I know, the first *numbered* release of C-News, but (by a margin
+> of several decades) not anywhere near the first release, I chose the
+> version number 1.1.0 to avoid implying that my release is the initial
+> release of C-News as a whole, and also suffixed my initials to make clear
+> that this release contains code that is not the work of the original authors.
+> 
+> C-news was designed to be able to run on 16-bit machines, but seems at the
+> time of patch CR.G to only have been tested recently on 32-bit machines.
+> The changes made by the PiDP-11 release of C-News include:
+> 
+> 1) Fixing places where the code assumes a 32-bit machine.
+> 2) Adding shebang lines to the many scripts in the original sources that
+> do not work on 2.11 BSD without a #!/bin/sh shebang.
+> 3) Awk seems to have trouble with running out of memory when processing 
+> numeric fields, and this causes occasional crashes in C-News scripts that
+> invoke awk. I have fixed this by changing awk invocations of the form:
+> 
+> awk '{ print("Hello world!") }'
+> 
+> with invocations of the form:
+> 
+> (PATH=/bin BIG_ENV_VAR="" exec awk '{print("Hello World!") }') 
+> 
+> to reduce the memory footprint of the environment.
+> 
+> The rest of this file is the original changelog from the CR.G patch, with
+> information on changes going back to the original Cleanup Release patch.
+> 
+diff -rN ../c-news-orig/README.etc ../PiDP-11-release/README.etc
+0a1,16
+> The original text of README.etc follows after the dashes below. Only a few
+> comments are needed. First of all, I doubt that the news.software.b 
+> newsgroup still exists, and the original authors have almost certainly moved
+> on to other things. The appropriate forum, given that I am releasing these 
+> modifications for the PiDP-11 community, is probably:
+> 
+> <https://groups.google.com/forum/?pli=1#!forum/pidp-11>
+> 
+> Unlike the original authors, however, I do not have intimate knowledge of 
+> the code. I will certainly try to help, but I am no expert on news software
+> in general or C News in particular.
+> 
+> 						Jon Brase, July 2020
+> 
+> -------------------------------------------------------------------------- 
+> 
+9d24
+< 
+diff -rN ../c-news-orig/README.install ../PiDP-11-release/README.install
+0a1,14
+> The original contents of this file are included at the end of this file, 
+> below the line of dashes. A PDF howto for the installation of C-News is
+> available at <https://github.com/jwbrase/pdp11-tools>. It mostly follows 
+> the below procedure, but gives context for modern users (a lot has changed
+> since 1995, and much of C-News is even older than that), and focuses on 
+> getting C-News running on a PiDP-11, which is a replica PDP-11/70 front
+> panel driven by a Rasperry Pi emulating a PDP-11 with simh. This file is a
+> good supplement to that howto, but does not cover the PiDP-11 specific 
+> aspects of the process.
+> 
+> The original installation instructions follow below:
+> 
+> ------------------------------------------------------------------------    
+> 
+diff -rN ../c-news-orig/readnews/postnews ../PiDP-11-release/readnews/postnews
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/relay/hdrdefs.c ../PiDP-11-release/relay/hdrdefs.c
+11c11
+< #include <stddef.h>		/* must define offsetof */
+---
+> #include <sys/stddef.h>		/* must define offsetof */
+diff -rN ../c-news-orig/relay/Ovmakefile ../PiDP-11-release/relay/Ovmakefile
+0a1,22
+> 
+> BASE=	relaynews.o procart.o article.o fsys.o hdrdefs.o hdrparse.o \
+> 	io.o ihave.o morefds.o 
+> # 5668 bytes.
+> 
+> OV1=	active.o control.o hdrmunge.o 
+> # 3688 bytes.
+> 
+> OV2=	fileart.o 
+> # 3822 bytes.
+> 
+> OV3=	history.o sys.o 
+> # 3130 bytes.
+> 
+> OV4=	transmit.o trbatch.o 
+> # 2740 bytes.
+> 
+> relaynews:
+> 	/bin/ld -i -X -o relaynews /lib/crt0.o \
+> 	$(BASE) \
+> 	-Z $(OV1) -Z $(OV2) -Z $(OV3) -Z $(OV4) \
+> 	-Y ../libcnews.a -lc
+diff -rN ../c-news-orig/relay/Ovmakefile.bak ../PiDP-11-release/relay/Ovmakefile.bak
+0a1,22
+> 
+> BASE=	relaynews.o procart.o active.o article.o fsys.o hdrdefs.o \
+> 	hdrparse.o io.o morefds.o 
+> # 6114 bytes.
+> 
+> OV1=	control.o hdrmunge.o ihave.o 
+> # 3242 bytes.
+> 
+> OV2=	fileart.o 
+> # 3822 bytes.
+> 
+> OV3=	history.o sys.o 
+> # 3130 bytes.
+> 
+> OV4=	transmit.o trbatch.o 
+> # 2740 bytes.
+> 
+> relaynews:
+> 	/bin/ld -i -X -o relaynews /lib/crt0.o \
+> 	$(BASE) \
+> 	-Z $(OV1) -Z $(OV2) -Z $(OV3) -Z $(OV4) \
+> 	-Y ../libcnews.a -lc
+diff -rN ../c-news-orig/relay/relayrun ../PiDP-11-release/relay/relayrun
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/sponsors/clarinet ../PiDP-11-release/sponsors/clarinet
+1,49d0
+< ClariNet Communications Corp. publishes a full electronic newspaper
+< that comes as 300 read-only USENET style newsgroups.  We're pleased
+< to sponsor C News as it is an ideal transport engine for ClariNet's
+< special newsgroups.  ClariNet puts 4MB a day of _news_ into netnews.
+< 
+< ClariNet newsgroups contain:
+< 
+< 	Live wireservice news from major wires such as the AP and Reuters.
+< 	National, Local, International, Technical, Business, Sports,
+< 		Market, Entertainment and Feature news.
+< 	Daily computer industry news from Newsbytes.
+< 	Graphics, including comic strips and editorial cartoons in
+< 		MIME format.  (Featuring Dilbert)
+< 	Syndicated columns, Press Releases, Internet information and more.
+< 
+< If you're running USENET software, ClariNet gives you newsgroups that
+< inform about the world -- an in particular the world of technology and
+< computers -- with in-depth coverage and the speed of electronic delivery.
+< What appears on ClariNet today will be in tomorrow morning's papers.
+< 
+< ClariNet makes news fit well into USENET format.  Articles all have
+< a meaningful Subject line (headline) written by a professional reporter.
+< ClariNet editors classify stories into multiple newsgroups so you can
+< follow what's new in your areas of interest every time you read netnews.
+< 
+< ClariNet is the oldest and most widely read provider of commercial
+< information to the USENET and Internet communities.  Our electronic
+< newspaper is (as of Sept 1994) read daily by over 70,000 people at
+< USENET sites.  ClariNet provides feeds over the internet via NNTP, or
+< via UUCP and other modem methods.  Once we authorize it, you can often
+< get your ClariNet feed from your USENET neighbours or feed hub -- many major
+< sites already subscribe.
+< 
+< ClariNet is inexpensive.  We work the internet way and charge a low, flat
+< monthly site-licence fee that lets everybody at your site read the news
+< as much as they want.  Costs are as low as $1/networker for corporations
+< and even less for schools and public-access sites (BBSs).
+< 
+< To find out more, including current source and newsgroup lists and for the
+< most up-to-date information and prices, please contact us in one of
+< the following ways:
+< 
+< 	E-mail:		cninfo@clarinet.com
+< 	WWW:		http://www.clarinet.com/cninfo.html
+< 	FTP:		ftp.clarinet.com -- clarinet_info directory
+< 	Phone:		800-USE-NETS or +1 408-296-0366
+< 
+< When you contact us, we will provide you with a free trial for a few weeks
+< so you and your users can see what ClariNet really is and discover its value.
+diff -rN ../c-news-orig/util/dbzinfo ../PiDP-11-release/util/dbzinfo
+1c1
+< awk 'NR == 1 && $1 != "dbz" {
+---
+> (PATH=/bin exec awk 'NR == 1 && $1 != "dbz" {
+32c32
+< }' $1.dir
+---
+> }' $1.dir)
+diff -rN ../c-news-orig/util/dostatfs.c ../PiDP-11-release/util/dostatfs.c
+55a56
+> 
+56a58,59
+> /* changed default unit from f_fsize to f_bsize
+> for 2.11 BSD. Jon Brase */
+58c61
+< #define	UNIT	f_fsize
+---
+> #define	UNIT	f_bsize
+diff -rN ../c-news-orig/util/history.dir ../PiDP-11-release/util/history.dir
+0a1,3
+> dbz 3 300007 9 C 128 124 24 4 1 0 3 2
+> 0 0 0 0 0 0 0 0 0 0 0
+> 0 0 0 0 0 0 0 0 0 0 0
+diff -rN ../c-news-orig/util/lock ../PiDP-11-release/util/lock
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/util/locktest ../PiDP-11-release/util/locktest
+0a1
+> 12751
+diff -rN ../c-news-orig/util/makefile ../PiDP-11-release/util/makefile
+111,112c111,114
+< 	$(HERE) if ./lock -o LOCKtest $$$$ ; then false ; else true ; fi
+< 	test -s LOCKtest ;
+---
+> 	: These makefile lines don't work when run from makefile, but
+> 	: they work from an interactive shell. We'll skip them
+> #	$(HERE) if ./lock -o LOCKtest $$$$ ; then false ; else true ; fi
+> #	test -s LOCKtest ;
+diff -rN ../c-news-orig/util/mkpdir ../PiDP-11-release/util/mkpdir
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/util/newshostname ../PiDP-11-release/util/newshostname
+4c4
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/util/queuelen.hdb ../PiDP-11-release/util/queuelen.hdb
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/util/queuelen.sub ../PiDP-11-release/util/queuelen.sub
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/util/queuelen.svr4 ../PiDP-11-release/util/queuelen.svr4
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/util/queuelen.tay ../PiDP-11-release/util/queuelen.tay
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/util/queuelen.vo ../PiDP-11-release/util/queuelen.vo
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/util/report ../PiDP-11-release/util/report
+6c6
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/util/sfcproto ../PiDP-11-release/util/sfcproto
+14c14
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/util/sfshproto ../PiDP-11-release/util/sfshproto
+14c14
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/util/staleness ../PiDP-11-release/util/staleness
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+8c8
+< exec awk '$1 == "/expired/" { print $3 }' $NEWSCTL/explist
+---
+> (PATH=/bin exec awk '$1 == "/expired/" { print $3 }' $NEWSCTL/explist)
+diff -rN ../c-news-orig/util/touchlock ../PiDP-11-release/util/touchlock
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}
+diff -rN ../c-news-orig/util/unlock ../PiDP-11-release/util/unlock
+5c5
+< . ${NEWSCONFIG-/etc/news/bin/config}
+---
+> . ${NEWSCONFIG-/usr/etc/news/bin/config}

@@ -1,0 +1,418 @@
+.lf 1 -
+.Ch "News Flow"
+.Ix news flow
+.Ix flow
+.PP
+The flow of news articles through
+C news
+is as follows:
+a batch is received by some network service
+(typically
+.I uucp
+or
+.I nntp )
+and passed to
+.I rnews ,
+.Ix rnews
+which invokes
+.I $NEWSBIN/input/newsspool
+.Ix newsspool
+to queue the batch in
+.B $NEWSARTS/in.coming ;
+.Ix in.coming
+.Ix files in.coming
+eventually
+.I $NEWSBIN/input/newsrun
+.Ix newsrun
+will be run by
+.I cron ,
+.Ix cron
+.I newsrun
+uncompresses any files in
+.B in.coming
+and
+either hands the batch to
+.I $NEWBIN/relay/relaynews
+.Ix relaynews
+locally or invokes
+.I relaynews
+over a network connection on its file server.
+.PP
+.I relaynews
+writes the name of each spool file onto the ends of batch files
+for neighbours.
+Eventually
+.I cron
+runs
+.I $NEWSBIN/batch/sendbatches ,
+.Ix sendbatches
+which
+batches up the outgoing articles and transmits them over some network.
+.LP
+.lf 51
+.PS 5.775i 5.000i 5
+.\" 0 5 568 661
+.\" 0.000i 5.775i 5.000i 0.000i
+.nr 00 \n(.u
+.nf
+.nr 0x 1
+\h'5.000i'
+.sp -1
+\D't -1.000p'\h'1.000p'
+.sp -1
+\h'1.408i'\v'3.944i'\D'p0.000i -0.845i -1.408i 0.000i 0.000i 0.845i'
+.sp -1
+\h'2.746i'\v'3.732i'\D'p0.000i -0.352i -1.056i 0.000i 0.000i 0.352i'
+.sp -1
+\h'3.521i'\v'1.549i'\D'l-0.845i 0.423i'
+.sp -1
+\D'f 2000u'\h'-2000u'
+.sp -1
+\h'2.676i'\v'1.972i'\D'P0.055i -0.047i 0.016i 0.031i'
+.sp -1
+\h'2.676i'\v'1.972i'\D'p0.055i -0.047i 0.016i 0.031i'
+.sp -1
+\h'4.155i'\v'1.549i'\D'p0.000i -0.282i -0.915i 0.000i 0.000i 0.282i'
+.sp -1
+\h'0.634i'\v'4.507i'\D'l0.000i 0.282i'
+.sp -1
+\h'0.634i'\v'4.789i'\D'P-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+\h'0.634i'\v'4.789i'\D'p-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+\h'4.366i'\v'5.141i'\D'l0.000i 0.282i'
+.sp -1
+\h'4.366i'\v'5.423i'\D'P-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+\h'4.366i'\v'5.423i'\D'p-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+\h'4.366i'\v'4.366i'\D'l0.000i 0.352i'
+.sp -1
+\h'4.366i'\v'4.718i'\D'P-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+\h'4.366i'\v'4.718i'\D'p-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+\h'4.366i'\v'2.324i'\D'l0.000i 0.493i'
+.sp -1
+\h'4.366i'\v'2.817i'\D'P-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+\h'4.366i'\v'2.817i'\D'p-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+\h'4.577i'\v'1.901i'\D'l0.070i -0.211i'
+.sp -1
+\h'4.648i'\v'1.690i'\D'P-0.006i 0.072i -0.033i -0.011i'
+.sp -1
+\h'4.648i'\v'1.690i'\D'p-0.006i 0.072i -0.033i -0.011i'
+.sp -1
+.lf 68
+\h'4.366i-(\w'\fR\s10NEWSARTS\s0\fP'u/2u)'\v'2.183i-(0v/2u)+0v+0.22m'\fR\s10NEWSARTS\s0\fP
+.sp -1
+.lf 69
+\h'4.366i-(\w'\fI\s10articles in\s0\fP'u/2u)'\v'2.042i-(0v/2u)+0v+0.22m'\fI\s10articles in\s0\fP
+.sp -1
+\h'3.803i'\v'2.113i'\D'e1.127i 0.423i'
+.sp -1
+.lf 71
+\h'4.296i-(\w'\fC\s10uux\s0\fP'u/2u)'\v'5.563i-(0v/2u)+0v+0.22m'\fC\s10uux\s0\fP
+.sp -1
+\h'4.789i'\v'5.704i'\D'p0.000i -0.282i -0.915i 0.000i 0.000i 0.282i'
+.sp -1
+.lf 73
+\h'2.606i-(\w'\fB\s14News Processing Flow\s0\fP'u/2u)'\v'5.775i-(0v/2u)+0v+0.22m'\fB\s14News Processing Flow\s0\fP
+.sp -1
+.lf 74
+\h'0.634i-(\w'\fC\s10nntpxmit\s0\fP'u/2u)'\v'5.141i-(0v/2u)+0v+0.22m'\fC\s10nntpxmit\s0\fP
+.sp -1
+.lf 75
+\h'0.563i-(\w'\fC\s10snntp\s0\fP'u/2u)'\v'5.000i-(0v/2u)+0v+0.22m'\fC\s10snntp\s0\fP
+.sp -1
+.lf 76
+\h'0.845i-(\w'\fC\s10cron\s0\fP'u/2u)'\v'4.577i-(0v/2u)+0v+0.22m'\fC\s10cron\s0\fP
+.sp -1
+.lf 77
+\h'0.423i-(\w'\fI\s10from\s0\fP'u/2u)'\v'4.577i-(0v/2u)+0v+0.22m'\fI\s10from\s0\fP
+.sp -1
+.lf 78
+\h'4.648i-(\w'\fC\s10cron\s0\fP'u/2u)'\v'4.437i-(0v/2u)+0v+0.22m'\fC\s10cron\s0\fP
+.sp -1
+.lf 79
+\h'4.155i-(\w'\fI\s10from\s0\fP'u/2u)'\v'4.437i-(0v/2u)+0v+0.22m'\fI\s10from\s0\fP
+.sp -1
+.lf 80
+\h'4.296i-(\w'\fC\s10batcher\s0\fP'u/2u)'\v'4.930i-(0v/2u)+0v+0.22m'\fC\s10batcher\s0\fP
+.sp -1
+\h'4.930i'\v'5.141i'\D'p0.000i -0.423i -1.197i 0.000i 0.000i 0.423i'
+.sp -1
+\h'1.268i'\v'5.352i'\D'p0.000i -0.563i -1.268i 0.000i 0.000i 0.563i'
+.sp -1
+\h'1.338i'\v'4.225i'\D'l-0.282i 0.000i'
+.sp -1
+\h'1.056i'\v'4.225i'\D'P0.070i -0.018i 0.000i 0.035i'
+.sp -1
+\h'1.056i'\v'4.225i'\D'p0.070i -0.018i 0.000i 0.035i'
+.sp -1
+\h'3.451i'\v'4.225i'\D'l0.282i 0.000i'
+.sp -1
+\h'3.732i'\v'4.225i'\D'P-0.070i 0.018i 0.000i -0.035i'
+.sp -1
+\h'3.732i'\v'4.225i'\D'p-0.070i 0.018i 0.000i -0.035i'
+.sp -1
+\h'2.324i'\v'3.732i'\D'l0.000i 0.211i'
+.sp -1
+\h'2.324i'\v'3.944i'\D'P-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+\h'2.324i'\v'3.944i'\D'p-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+.lf 89
+\h'2.394i-(\w'\fR\s10NEWSARTS/out.going/sites\s0\fP'u/2u)'\v'4.225i-(0v/2u)+0v+0.22m'\fR\s10NEWSARTS/out.going/sites\s0\fP
+.sp -1
+.lf 90
+\h'2.465i-(\w'\fI\s10batch files in\s0\fP'u/2u)'\v'4.085i-(0v/2u)+0v+0.22m'\fI\s10batch files in\s0\fP
+.sp -1
+.lf 91
+\h'0.563i-(\w'\fC\s10sendnntp\s0\fP'u/2u)'\v'4.296i-(0v/2u)+0v+0.22m'\fC\s10sendnntp\s0\fP
+.sp -1
+.lf 92
+\h'4.366i-(\w'\fC\s10sendbatches\s0\fP'u/2u)'\v'4.155i-(0v/2u)+0v+0.22m'\fC\s10sendbatches\s0\fP
+.sp -1
+\h'4.930i'\v'4.366i'\D'p0.000i -0.423i -1.197i 0.000i 0.000i 0.423i'
+.sp -1
+\h'1.056i'\v'4.507i'\D'p0.000i -0.352i -0.986i 0.000i 0.000i 0.352i'
+.sp -1
+\h'1.338i'\v'4.225i'\D'e2.113i 0.563i'
+.sp -1
+.lf 96
+\h'4.507i-(\w'\fC\s10cron\s0\fP'u/2u)'\v'3.310i-(0v/2u)+0v+0.22m'\fC\s10cron\s0\fP
+.sp -1
+.lf 97
+\h'0.704i-(\w'\fC\s10inetd\s0\fP'u/2u)'\v'1.056i-(0v/2u)+0v+0.22m'\fC\s10inetd\s0\fP
+.sp -1
+\h'3.239i'\v'0.775i'\D'l-0.282i 0.000i'
+.sp -1
+\h'2.958i'\v'0.775i'\D'P0.070i -0.018i 0.000i 0.035i'
+.sp -1
+\h'2.958i'\v'0.775i'\D'p0.070i -0.018i 0.000i 0.035i'
+.sp -1
+\h'1.408i'\v'0.845i'\D'e1.549i 0.563i'
+.sp -1
+.lf 101
+\h'4.859i-(\w'\fC\s10cron\s0\fP'u/2u)'\v'0.986i-(0v/2u)+0v+0.22m'\fC\s10cron\s0\fP
+.sp -1
+.lf 102
+\h'4.507i-(\w'\fI\s10from\s0\fP'u/2u)'\v'0.986i-(0v/2u)+0v+0.22m'\fI\s10from\s0\fP
+.sp -1
+\h'5.000i'\v'1.690i'\D'p0.000i -0.423i -0.704i 0.000i 0.000i 0.423i'
+.sp -1
+\h'5.000i'\v'0.845i'\D'p0.000i -0.282i -0.704i 0.000i 0.000i 0.282i'
+.sp -1
+\h'3.944i'\v'0.845i'\D'p0.000i -0.282i -0.704i 0.000i 0.000i 0.282i'
+.sp -1
+\h'2.183i'\v'1.127i'\D'l0.000i 0.141i'
+.sp -1
+\h'2.183i'\v'1.268i'\D'P-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+\h'2.183i'\v'1.268i'\D'p-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+\h'2.183i'\v'0.423i'\D'l0.000i 0.141i'
+.sp -1
+\h'2.183i'\v'0.563i'\D'P-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+\h'2.183i'\v'0.563i'\D'p-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+\h'1.127i'\v'0.775i'\D'l0.282i 0.000i'
+.sp -1
+\h'1.408i'\v'0.775i'\D'P-0.070i 0.018i 0.000i -0.035i'
+.sp -1
+\h'1.408i'\v'0.775i'\D'p-0.070i 0.018i 0.000i -0.035i'
+.sp -1
+.lf 112
+\h'2.183i-(\w'\fR\s10NEWSARTS/in.coming\s0\fP'u/2u)'\v'0.845i-(0v/2u)+0v+0.22m'\fR\s10NEWSARTS/in.coming\s0\fP
+.sp -1
+.lf 113
+\h'2.183i-(\w'\fI\s10news batch in\s0\fP'u/2u)'\v'0.704i-(0v/2u)+0v+0.22m'\fI\s10news batch in\s0\fP
+.sp -1
+.lf 114
+\h'1.127i-(\w'\fR\s10\s0\fP'u/2u)'\v'3.592i-(0v/2u)+0v+0.22m'\fR\s10\s0\fP
+.sp -1
+.lf 115
+\h'0.634i-(\w'\fB\s10Key\s0\fP'u/2u)'\v'3.310i-(0v/2u)+0v+0.22m'\fB\s10Key\s0\fP
+.sp -1
+.lf 116
+\h'0.704i-(\w'\fC\s10Courier   program\s0\fP'u/2u)'\v'3.451i-(0v/2u)+0v+0.22m'\fC\s10Courier   program\s0\fP
+.sp -1
+.lf 117
+\h'0.211i-(\w'\fR\s10Roman\s0\fP'u/2u)'\v'3.592i-(0v/2u)+0v+0.22m'\fR\s10Roman\s0\fP
+.sp -1
+.lf 118
+\h'0.775i-(\w'\fR\s10file\s0\fP'u/2u)'\v'3.592i-(0v/2u)+0v+0.22m'\fR\s10file\s0\fP
+.sp -1
+.lf 119
+\h'0.211i-(\w'\fI\s10Italic\s0\fP'u/2u)'\v'3.732i-(0v/2u)+0v+0.22m'\fI\s10Italic\s0\fP
+.sp -1
+.lf 120
+\h'0.915i-(\w'\fI\s10comment\s0\fP'u/2u)'\v'3.732i-(0v/2u)+0v+0.22m'\fI\s10comment\s0\fP
+.sp -1
+.lf 121
+\h'4.648i-(\w'\fC\s10rn, nn\s0\fP'u/2u)'\v'1.549i-(0v/2u)+0v+0.22m'\fC\s10rn, nn\s0\fP
+.sp -1
+.lf 122
+\h'4.648i-(\w'\fI\s10readers\s0\fP'u/2u)'\v'1.338i-(0v/2u)+0v+0.22m'\fI\s10readers\s0\fP
+.sp -1
+.lf 123
+\h'2.042i-(\w'\fC\s10injnews\s0\fP'u/2u)'\v'0.352i-(0v/2u)+0v+0.22m'\fC\s10injnews\s0\fP
+.sp -1
+.lf 124
+\h'2.042i-(\w'\fC\s10inews\s0\fP'u/2u)'\v'0.211i-(0v/2u)+0v+0.22m'\fC\s10inews\s0\fP
+.sp -1
+.lf 125
+\h'2.113i-(\w'\fI\s10LOCAL\s0\fP'u/2u)'\v'0.000i-(0v/2u)+0v+0.22m'\fI\s10LOCAL\s0\fP
+.sp -1
+\h'2.535i'\v'0.423i'\D'p0.000i -0.352i -0.915i 0.000i 0.000i 0.352i'
+.sp -1
+\h'1.127i'\v'0.915i'\D'p0.000i -0.352i -1.056i 0.000i 0.000i 0.352i'
+.sp -1
+\h'4.296i'\v'0.704i'\D'l-0.352i 0.000i'
+.sp -1
+\h'3.944i'\v'0.704i'\D'P0.070i -0.018i 0.000i 0.035i'
+.sp -1
+\h'3.944i'\v'0.704i'\D'p0.070i -0.018i 0.000i 0.035i'
+.sp -1
+\h'2.676i'\v'1.620i'\D'p0.000i -0.352i -1.056i 0.000i 0.000i 0.352i'
+.sp -1
+\h'2.676i'\v'1.408i'\D'l0.563i 0.000i'
+.sp -1
+\h'3.239i'\v'1.408i'\D'P-0.070i 0.018i 0.000i -0.035i'
+.sp -1
+\h'3.239i'\v'1.408i'\D'p-0.070i 0.018i 0.000i -0.035i'
+.sp -1
+\h'2.676i'\v'2.324i'\D'p0.000i -0.352i -1.127i 0.000i 0.000i 0.352i'
+.sp -1
+\h'2.183i'\v'1.620i'\D'l0.000i 0.352i'
+.sp -1
+\h'2.183i'\v'1.972i'\D'P-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+\h'2.183i'\v'1.972i'\D'p-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+\h'2.676i'\v'2.113i'\D'l1.127i 0.000i'
+.sp -1
+\h'3.803i'\v'2.113i'\D'P-0.070i 0.018i 0.000i -0.035i'
+.sp -1
+\h'3.803i'\v'2.113i'\D'p-0.070i 0.018i 0.000i -0.035i'
+.sp -1
+\h'0.141i'\v'1.725i'\D'e0.634i 0.211i'
+.sp -1
+\h'0.141i'\v'2.077i'\D'e0.634i 0.211i'
+.sp -1
+.lf 140
+\h'0.423i-(\w'\fR\s10log\s0\fP'u/2u)'\v'1.690i-(0v/2u)+0v+0.22m'\fR\s10log\s0\fP
+.sp -1
+.lf 141
+\h'0.423i-(\w'\fR\s10errlog\s0\fP'u/2u)'\v'2.042i-(0v/2u)+0v+0.22m'\fR\s10errlog\s0\fP
+.sp -1
+\h'1.549i'\v'2.113i'\D'l-0.775i -0.070i'
+.sp -1
+\h'0.775i'\v'2.042i'\D'P0.072i -0.011i -0.003i 0.035i'
+.sp -1
+\h'0.775i'\v'2.042i'\D'p0.072i -0.011i -0.003i 0.035i'
+.sp -1
+\h'1.549i'\v'2.113i'\D'l-0.775i -0.352i'
+.sp -1
+\h'0.775i'\v'1.761i'\D'P0.071i 0.013i -0.015i 0.032i'
+.sp -1
+\h'0.775i'\v'1.761i'\D'p0.071i 0.013i -0.015i 0.032i'
+.sp -1
+\h'1.408i'\v'2.852i'\D'e1.479i 0.493i'
+.sp -1
+.lf 147
+\h'2.113i-(\w'\fR\s10NEWSARTS/out.master\s0\fP'u/2u)'\v'2.887i-(0v/2u)+0v+0.22m'\fR\s10NEWSARTS/out.master\s0\fP
+.sp -1
+\h'2.183i'\v'2.324i'\D'l0.000i 0.282i'
+.sp -1
+\h'2.183i'\v'2.606i'\D'P-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+\h'2.183i'\v'2.606i'\D'p-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+\h'2.183i'\v'3.099i'\D'l0.000i 0.282i'
+.sp -1
+\h'2.183i'\v'3.380i'\D'P-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+\h'2.183i'\v'3.380i'\D'p-0.018i -0.070i 0.035i 0.000i'
+.sp -1
+\h'2.958i'\v'2.570i'\D'e0.915i 0.211i'
+.sp -1
+\h'2.676i'\v'2.324i'\D'l0.282i 0.211i'
+.sp -1
+\h'2.958i'\v'2.535i'\D'P-0.067i -0.028i 0.021i -0.028i'
+.sp -1
+\h'2.958i'\v'2.535i'\D'p-0.067i -0.028i 0.021i -0.028i'
+.sp -1
+\h'4.930i'\v'3.169i'\D'p0.000i -0.352i -1.056i 0.000i 0.000i 0.352i'
+.sp -1
+\h'3.592i'\v'2.676i'\D'l0.282i 0.141i'
+.sp -1
+\h'3.592i'\v'2.676i'\D'P0.071i 0.016i -0.016i 0.031i'
+.sp -1
+\h'3.592i'\v'2.676i'\D'p0.071i 0.016i -0.016i 0.031i'
+.sp -1
+\h'3.873i'\v'2.817i'\D'P-0.071i -0.016i 0.016i -0.031i'
+.sp -1
+\h'3.873i'\v'2.817i'\D'p-0.071i -0.016i 0.016i -0.031i'
+.sp -1
+.lf 158
+\h'3.380i-(\w'\fR\s10history\s0\fP'u/2u)'\v'2.535i-(0v/2u)+0v+0.22m'\fR\s10history\s0\fP
+.sp -1
+.lf 159
+\h'0.563i-(\w'\fC\s10(s)nntpd\s0\fP'u/2u)'\v'0.704i-(0v/2u)+0v+0.22m'\fC\s10(s)nntpd\s0\fP
+.sp -1
+.lf 160
+\h'3.592i-(\w'\fC\s10rnews\s0\fP'u/2u)'\v'0.704i-(0v/2u)+0v+0.22m'\fC\s10rnews\s0\fP
+.sp -1
+.lf 161
+\h'4.648i-(\w'\fC\s10uuxqt\s0\fP'u/2u)'\v'0.704i-(0v/2u)+0v+0.22m'\fC\s10uuxqt\s0\fP
+.sp -1
+.lf 162
+\h'3.662i-(\w'\fC\s10uncompress\s0\fP'u/2u)'\v'1.408i-(0v/2u)+0v+0.22m'\fC\s10uncompress\s0\fP
+.sp -1
+.lf 163
+\h'2.113i-(\w'\fC\s10newsrun\s0\fP'u/2u)'\v'1.408i-(0v/2u)+0v+0.22m'\fC\s10newsrun\s0\fP
+.sp -1
+.lf 164
+\h'2.183i-(\w'\fC\s10relaynews\s0\fP'u/2u)'\v'2.113i-(0v/2u)+0v+0.22m'\fC\s10relaynews\s0\fP
+.sp -1
+.lf 165
+\h'4.366i-(\w'\fC\s10expire\s0\fP'u/2u)'\v'3.028i-(0v/2u)+0v+0.22m'\fC\s10expire\s0\fP
+.sp -1
+.lf 166
+\h'2.183i-(\w'\fC\s10explode\s0\fP'u/2u)'\v'3.592i-(0v/2u)+0v+0.22m'\fC\s10explode\s0\fP
+.sp -1
+.lf 167
+\h'0.282i-(\w'\fI\s10from\s0\fP'u/2u)'\v'1.056i-(0v/2u)+0v+0.22m'\fI\s10from\s0\fP
+.sp -1
+.lf 168
+\h'2.183i-(\w'\fI\s10\s0\fP'u/2u)'\v'5.634i-(0v/2u)+0v+0.22m'\fI\s10\s0\fP
+.sp -1
+.lf 169
+\h'4.155i-(\w'\fI\s10from\s0\fP'u/2u)'\v'3.310i-(0v/2u)+0v+0.22m'\fI\s10from\s0\fP
+.sp -1
+.lf 170
+\h'1.972i-(\w'\fI\s10from\s0\fP'u/2u)'\v'1.690i-(0v/2u)+0v+0.22m'\fI\s10from\s0\fP
+.sp -1
+.lf 171
+\h'2.324i-(\w'\fC\s10cron\s0\fP'u/2u)'\v'1.690i-(0v/2u)+0v+0.22m'\fC\s10cron\s0\fP
+.sp -1
+.lf 172
+\h'2.183i-(\w'\fI\s10master batch files in\s0\fP'u/2u)'\v'2.746i-(0v/2u)+0v+0.22m'\fI\s10master batch files in\s0\fP
+.sp -1
+.lf 173
+\h'4.648i-(\w'\fI\s10UUCP\s0\fP'u/2u)'\v'0.493i-(0v/2u)+0v+0.22m'\fI\s10UUCP\s0\fP
+.sp -1
+.lf 174
+\h'0.634i-(\w'\fI\s10NNTP\s0\fP'u/2u)'\v'0.493i-(0v/2u)+0v+0.22m'\fI\s10NNTP\s0\fP
+.sp -1
+.sp 5.775i+1
+.if \n(00 .fi
+.br
+.nr 0x 0
+.lf 175
+.PE
+.lf 176

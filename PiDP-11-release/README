@@ -1,0 +1,33 @@
+PiDP-11 release of C News, version 1.1.0-jwb			July 2020
+
+This release can be obtained from my github repository at <https://www.github.com/jwbrase>. 
+I also have a copy of the original Cleanup Release with patch CR.G sources, which I
+originally obtained from:
+
+<https://www.tuhs.org/Archive/Applications/News/C-News/Apr_1995_Release/c-news.tar.Z>.
+
+See README.changes for what's changed since patch CR.G, README.install for
+installation instructions and a pointer to my installation howto, and 
+README.etc for general notes. The documentation in doc/ was apparently out of
+date as of CR.G, but the changes I've made are relatively minor, so the 
+documentation shouldn't be much more out of date than it was 25 years ago :-).
+
+The original text of the README file from CR.G follows after the dashes below.
+Obviously, the instructions there for obtaining C-News are going to be long
+out of date, see the github and tuhs.org links above.
+
+---------------------------------------------------------------------------
+ 
+
+Cleanup Release of C News, with patch CR.G			April 1995
+
+The current C News distribution can be retrieved by anonymous FTP from
+ftp.cs.toronto.edu (file pub/c-news/c-news.tar.Z) or ftp.zoo.toronto.edu
+(file pub/cnews.tar.Z).  Please avoid major use of FTP during our peak
+hours (0800-1800 Eastern time, zone -0500).  Major archive sites such as
+ftp.uu.net and ftp.funet.fi also usually have the latest distribution.
+
+See README.changes for what's new and wonderful, README.install for
+installation instructions, README.etc for general notes.
+
+Warning:  the documentation in doc/ is somewhat out of date.

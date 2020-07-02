@@ -1,0 +1,39 @@
+#! /bin/sh
+# tear prefix [file...] - tear RFC822 header and body apart
+#	output files are $1hdr and $1body
+PATH=/bin:/usr/bin; export PATH
+
+if [ $LOGNAME = regression ]
+then
+TEAR_HELPER=$NEWSBIN/tear-helper.awk
+else
+TEAR_HELPER=$NEWSBIN/inject/tear-helper.awk
+fi
+
+case $# in
+0)
+	echo "usage: tear prefix [file...]" >&2
+	exit 1
+	;;
+esac
+
+hdr="$1hdr"
+body="$1body"
+shift
+
+export hdr body
+
+>>$hdr					# create files just in case
+>>$body
+case $# in
+0)	args="-" ;;	# awk needs a filename due to cmd. line assignments
+*)	args="$@" ;;
+esac
+
+# thanks to Charles Lindsey for the slightly better checking here
+# The above comment was in the original C-news sources
+
+# This needed to be split out into a separate file, as the 2.11 BSD shell
+# wouldn't handle the long awk statement inline
+# This comment was added by Jon Brase in 2020
+(echo $hdr $body ;  cat $args ; ) | exec awk -f $TEAR_HELPER - 

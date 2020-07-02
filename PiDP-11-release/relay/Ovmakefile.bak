@@ -1,0 +1,22 @@
+
+BASE=	relaynews.o procart.o active.o article.o fsys.o hdrdefs.o \
+	hdrparse.o io.o morefds.o 
+# 6114 bytes.
+
+OV1=	control.o hdrmunge.o ihave.o 
+# 3242 bytes.
+
+OV2=	fileart.o 
+# 3822 bytes.
+
+OV3=	history.o sys.o 
+# 3130 bytes.
+
+OV4=	transmit.o trbatch.o 
+# 2740 bytes.
+
+relaynews:
+	/bin/ld -i -X -o relaynews /lib/crt0.o \
+	$(BASE) \
+	-Z $(OV1) -Z $(OV2) -Z $(OV3) -Z $(OV4) \
+	-Y ../libcnews.a -lc
